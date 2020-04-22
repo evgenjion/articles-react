@@ -1,5 +1,3 @@
-// src/store/system/reducers.ts
-
 import { ISystemState, ISystemActionTypes, SystemEvents } from './types'
 
 const initialState: ISystemState = {
@@ -18,11 +16,6 @@ export function systemReducer(
                 ...state,
                 ...action.payload
             }
-        }
-        case SystemEvents.LOGIN: {
-            alert('Ololo login event from reducer');
-
-            return state;
         }
         default:
             return state

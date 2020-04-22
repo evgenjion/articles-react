@@ -6,7 +6,6 @@ export interface ISystemState {
 
 export enum SystemEvents {
     UPDATE_SESSION = 'UPDATE_SESSION',
-    LOGIN = 'LOGIN'
 }
 
 interface IUpdateSessionAction {
@@ -14,8 +13,4 @@ interface IUpdateSessionAction {
     payload: ISystemState;
 }
 
-interface IUserLoginAction {
-    type: SystemEvents.LOGIN;
-}
-
-export type ISystemActionTypes = IUpdateSessionAction | IUserLoginAction;
+export type ISystemActionTypes = IUpdateSessionAction;
