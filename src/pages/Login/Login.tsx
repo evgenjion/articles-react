@@ -1,29 +1,12 @@
-import React from "react";
-// import { connect, ConnectedProps } from "react-redux";
-import { Button, Container, Box, TextField, makeStyles, Theme, Grid, Paper } from '@material-ui/core';
+import React, { FormEventHandler, useState } from "react";
+import { Button, Box, TextField, makeStyles, Theme, Grid, Paper } from '@material-ui/core';
 
-// import { SystemEvents } from "../../store/system/types";
-// import { IRootState } from "../../store";
+import { loginUser } from '../../store/system/actions';
+import { IRootState } from '../../store/';
+import { useSelector, useDispatch } from "react-redux";
+import { Redirect } from "react-router-dom";
 
-// const mapState = (state: IRootState) => ({
-//     system: state.system,
-// });
-
-// const mapDispatch = {
-//     login: () => ({ type: SystemEvents.LOGIN }),
-// };
-
-// const connector = connect(mapState, mapDispatch);
-// type IPropsFromRedux = ConnectedProps<typeof connector>;
-
-/**
- * Own props of component
- */
-interface IAppProps extends Object {// IPropsFromRedux {
-    backgroundColor: string;
-}
-
-// FROM https://material-ui.com/components/text-fields/
+// https://material-ui.com/components/text-fields/
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
         display: "flex",
@@ -46,12 +29,25 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 function LoginPage() {
-    // const { system } = props;
-    // const { loggedIn } = system;
+    const [login, setLogin] = useState('');
+    const [password, setPas] = useState('');
+    const dispatch = useDispatch();
 
-    // @ts-ignore TODO: убрать
-    const onSubmit = (data) => console.log(data);
+    const onSubmit: FormEventHandler<unknown> = (e) => {
+        e.preventDefault();
+        dispatch(loginUser({
+            login,
+            password,
+        }));
+    }
     const classes = useStyles();
+    const userLoggedIn = useSelector((state: IRootState) => state.system.loggedIn);
+
+    if (userLoggedIn) {
+        return (
+            <Redirect to="/" />
+        );
+    }
 
     return (
         <div className={classes.root}>
@@ -63,7 +59,6 @@ function LoginPage() {
                 >
                 <Grid item xs={6}>
                     <Paper className={classes.paper}>
-
                         <form onSubmit={onSubmit} autoComplete="off">
                             <Box className={classes.formItem}>
                                 <TextField
@@ -73,6 +68,8 @@ function LoginPage() {
                                     required
                                     fullWidth
                                     className={classes.textField}
+                                    value={login}
+                                    onChange={({ target }) => setLogin(target.value)}
                                     />
                             </Box>
 
@@ -85,6 +82,8 @@ function LoginPage() {
                                     required
                                     fullWidth
                                     className={classes.textField}
+                                    value={password}
+                                    onChange={({ target }) => setPas(target.value)}
                                     />
                             </Box>
 
@@ -102,5 +101,4 @@ function LoginPage() {
     );
 }
 
-// TODO: Hooks + reselect? https://react-redux.js.org/api/hooks
-export default LoginPage; // connector(LoginPage);
+export default LoginPage;
