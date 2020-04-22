@@ -10,12 +10,6 @@ function articleListLoadStart() {
     };
 }
 
-function articleLoadStart() {
-    return {
-
-    }
-}
-
 function articlesLoadFinish(articleList: IArticle[]): IArticleLoadFinishedEvent {
     return {
         type: ArticleEventEnum.ARTICLES_LOAD_FINISHED,
